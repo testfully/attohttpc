@@ -7,6 +7,7 @@ use crate::charsets::Charset;
 use crate::request::proxy::ProxySettings;
 use crate::skip_debug::SkipDebug;
 use crate::tls::Certificate;
+use crate::tls::Identity;
 
 #[derive(Clone, Debug)]
 pub struct BaseSettings {
@@ -17,6 +18,7 @@ pub struct BaseSettings {
     pub connect_timeout: Duration,
     pub read_timeout: Duration,
     pub timeout: Option<Duration>,
+    pub identity: SkipDebug<Option<Identity>>,
     pub proxy_settings: ProxySettings,
     pub accept_invalid_certs: bool,
     pub accept_invalid_hostnames: bool,
@@ -38,6 +40,7 @@ impl Default for BaseSettings {
             connect_timeout: Duration::from_secs(30),
             read_timeout: Duration::from_secs(30),
             timeout: None,
+            identity: SkipDebug(None),
             proxy_settings: ProxySettings::from_env(),
             accept_invalid_certs: false,
             accept_invalid_hostnames: false,
