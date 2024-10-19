@@ -237,6 +237,9 @@ fn read_timeout(stream: &mut impl Read, buf: &mut [u8], timeout: &Option<mpsc::S
 }
 
 fn apply_base_settings(handshaker: &mut TlsHandshaker, base_settings: &BaseSettings) {
+    if let Some(identity) = &base_settings.identity.0 {
+        handshaker.identity(identity.clone());
+    }
     handshaker.danger_accept_invalid_certs(base_settings.accept_invalid_certs);
     handshaker.danger_accept_invalid_hostnames(base_settings.accept_invalid_hostnames);
     for cert in &base_settings.root_certificates.0 {

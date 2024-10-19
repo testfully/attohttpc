@@ -3,6 +3,7 @@ use std::convert::{From, TryInto};
 use std::fs;
 use std::str;
 use std::time::Duration;
+use crate::skip_debug::SkipDebug;
 
 #[cfg(feature = "basic-auth")]
 use base64::Engine;
@@ -26,6 +27,7 @@ use crate::request::{
     BaseSettings, PreparedRequest,
 };
 use crate::tls::Certificate;
+use crate::tls::Identity;
 
 const DEFAULT_USER_AGENT: &str = concat!("attohttpc/", env!("CARGO_PKG_VERSION"));
 
@@ -387,6 +389,12 @@ impl<B> RequestBuilder<B> {
     /// to the list of trusted root CAs by your system.
     pub fn danger_accept_invalid_certs(mut self, accept_invalid_certs: bool) -> Self {
         self.base_settings.accept_invalid_certs = accept_invalid_certs;
+        self
+    }
+
+    /// sets the client credentials for mtls
+    pub fn identity(mut self, identity: Identity) -> Self {
+        self.base_settings.identity = SkipDebug(Some(identity));
         self
     }
 

@@ -8,6 +8,8 @@ use crate::Result;
 
 pub type Certificate = native_tls::Certificate;
 
+pub type Identity = native_tls::Identity;
+
 pub struct TlsHandshaker {
     inner: native_tls::TlsConnectorBuilder,
 }
@@ -17,6 +19,10 @@ impl TlsHandshaker {
         TlsHandshaker {
             inner: native_tls::TlsConnector::builder(),
         }
+    }
+
+    pub fn identity(&mut self, identity: Identity) {
+        self.inner.identity(identity);
     }
 
     pub fn danger_accept_invalid_certs(&mut self, accept_invalid_certs: bool) {
